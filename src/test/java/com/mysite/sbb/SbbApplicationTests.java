@@ -11,6 +11,7 @@ import com.mysite.sbb.answer.AnswerRepository;
 import com.mysite.sbb.answer.AnswerService;
 import com.mysite.sbb.question.Question;
 import com.mysite.sbb.question.QuestionRepository;
+import com.mysite.sbb.question.QuestionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,22 +23,14 @@ import org.springframework.transaction.annotation.Transactional;
 class SbbApplicationTests {
 
     @Autowired
-    private QuestionRepository questionRepository;
-    @Autowired
-    private AnswerRepository answerRepository;
+    private QuestionService questionService;
 
-    @Transactional
     @Test
-    void testJpa() {
-
-        Optional<Question> oq=this.questionRepository.findById(6);
-        Question question=oq.get();
-
-        Answer answer=new Answer();
-        answer.setQuestion(question);
-        answer.setContent("Yap, no needed.");
-        answer.setCreateDate(LocalDateTime.now());
-
-        this.answerRepository.save(answer);
+    void testJpa(){
+        for (int i=1;i<=300;i++){
+            String subject=String.format("Test data:[%03d]",i);
+            String content="No data";
+            this.questionService.create(subject,content);
+        }
     }
 }
