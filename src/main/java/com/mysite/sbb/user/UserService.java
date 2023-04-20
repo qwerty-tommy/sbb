@@ -1,9 +1,13 @@
 package com.mysite.sbb.user;
 
 
+import com.mysite.sbb.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.exec.spi.StandardEntityInstanceResolver;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -20,4 +24,12 @@ public class UserService {
         return user;
     }
 
+    public SiteUser getUser(String username){
+        Optional<SiteUser> siteUser=userRepository.findByUsername(username);
+        if (siteUser.isPresent()){
+            return  siteUser.get();
+        } else{
+            throw new DataNotFoundException("User not found");
+        }
+    }
 }

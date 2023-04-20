@@ -1,5 +1,6 @@
 package com.mysite.sbb.question;
 
+import com.mysite.sbb.user.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,11 +33,12 @@ public class QuestionService {
         }
     }
 
-    public void create(String subject, String content){
+    public void create(String subject, String content, SiteUser user){
         Question question=new Question();
         question.setCreateDate(LocalDateTime.now());
         question.setContent(content);
         question.setSubject(subject);
+        question.setAuthor(user);
         this.questionRepository.save(question);
     }
 
