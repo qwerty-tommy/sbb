@@ -18,6 +18,11 @@
                 </div>
             </div>
             <div class="my-3">
+                <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+                   th:data-uri="@{|/question/vote/${question.id}|}">
+                    Like
+                    <span class="badge rounded-pill bg-success" th:text="${#lists.size(question.voter)}"></span>
+                </a>
                 <a th:href="@{|/question/modify/${question.id}|}" class="btn btn-sm btn-outline-secondary"
                    sec:authorize="isAuthenticated()"
                    th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
@@ -31,7 +36,7 @@
         </div>
     </div>
     <!-- 답변의 갯수 표시 -->
-    <h5 class="border-bottom my-3 py-2"
+    <h5 class="border-bottom my-4 py-2"
         th:text="|${#lists.size(question.answerList)} Reply|"></h5>
     <!-- 답변 반복 시작 -->
     <div class="card my-3" th:each="answer : ${question.answerList}">
@@ -50,6 +55,11 @@
                 </div>
             </div>
             <div class="my-3">
+                <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+                   th:data-uri="@{|/answer/vote/${answer.id}|}">
+                    Like
+                    <span class="badge rounded-pill bg-success" th:text="${#lists.size(answer.voter)}"></span>
+                </a>
                 <a th:href="@{|/answer/modify/${answer.id}|}" class="btn btn-sm btn-outline-secondary"
                    sec:authorize="isAuthenticated()"
                    th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
@@ -75,6 +85,14 @@
     Array.from(delete_elements).forEach(function(element) {
         element.addEventListener('click', function() {
             if(confirm("Are you sure you want to delete it?")) {
+                location.href = this.dataset.uri;
+            };
+        });
+    });
+    const recommend_elements = document.getElementsByClassName("recommend");
+    Array.from(recommend_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if(confirm("Are you sure you want to recommend it?")) {
                 location.href = this.dataset.uri;
             };
         });
